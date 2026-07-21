@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EAR-BC — The Suspended Chord</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%97%88%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #13131a;
+    --bg3: #1c1c26;
+    --border: #2a2a3a;
+    --amber: #f0a500;
+    --amber-dim: #a07010;
+    --violet: #9b6dff;
+    --violet-dim: #5a3fa0;
+    --teal: #2dd4bf;
+    --rose: #e8617c;
+    --text: #e8e8f0;
+    --text-dim: #8888a8;
+    --text-muted: #555570;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'DM Sans', system-ui, sans-serif;
+    --mono: 'DM Mono', monospace;
+  }
+  [data-theme="light"] {
+    --bg: #f8f7f2;
+    --bg2: #eeede6;
+    --bg3: #e4e2d8;
+    --border: #cccabb;
+    --text: #1a1a2e;
+    --text-dim: #555570;
+    --text-muted: #9998b0;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.6rem 2rem;
+    backdrop-filter: blur(8px);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--amber);
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .nav-logo .logo-spin {
+    display: inline-block;
+    animation: spin 12s linear infinite;
+    font-size: 1.1rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .nav-links {
+    display: flex; gap: 1.5rem; list-style: none;
+    font-size: 0.78rem; font-family: var(--mono);
+  }
+  .nav-links a { color: var(--text-dim); text-decoration: none; }
+  .nav-links a:hover { color: var(--amber); }
+  .nav-links a.active { color: var(--amber); }
+  .theme-btn {
+    background: none; border: 1px solid var(--border);
+    color: var(--text-dim); cursor: pointer;
+    font-family: var(--mono); font-size: 0.75rem;
+    padding: 0.25rem 0.6rem; border-radius: 4px;
+  }
+  .theme-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+  .hero {
+    max-width: 860px; margin: 0 auto;
+    padding: 5rem 2rem 3rem;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--amber); letter-spacing: 0.12em;
+    text-transform: uppercase; margin-bottom: 1.2rem;
+  }
+  h1 {
+    font-family: var(--serif); font-size: clamp(2.4rem, 5vw, 3.8rem);
+    line-height: 1.1; color: var(--text);
+    margin-bottom: 1rem;
+  }
+  h1 em { color: var(--violet); font-style: italic; }
+  .hero-sub {
+    font-size: 1.1rem; color: var(--text-dim);
+    max-width: 640px; margin-bottom: 2rem;
+  }
+  .hero-meta {
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--text-muted); display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+
+  /* Suspended chord visual — held, unresolved, gently breathing */
+  .sus-chord {
+    display: flex; gap: 0.6rem; align-items: flex-end;
+    margin: 2rem 0 0.5rem;
+    height: 64px;
+  }
+  .sus-chord .note {
+    width: 10px; border-radius: 3px 3px 0 0;
+    animation: breathe 4.2s ease-in-out infinite;
+  }
+  .sus-chord .note:nth-child(1) { background: var(--amber); height: 40%; animation-delay: 0s; }
+  .sus-chord .note:nth-child(2) { background: var(--violet); height: 62%; animation-delay: 0.4s; }
+  .sus-chord .note:nth-child(3) { background: var(--teal); height: 78%; animation-delay: 0.8s; }
+  .sus-chord .note:nth-child(4) { background: var(--rose); height: 55%; animation-delay: 1.2s; }
+  @keyframes breathe {
+    0%, 100% { opacity: 0.55; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.08); }
+  }
+  .sus-label {
+    font-family: var(--mono); font-size: 0.68rem;
+    color: var(--text-muted); letter-spacing: 0.1em;
+    margin-bottom: 2.5rem;
+  }
+
+  main { max-width: 860px; margin: 0 auto; padding: 0 2rem 6rem; }
+
+  section { padding: 3.5rem 0; border-bottom: 1px solid var(--border); }
+  section:last-child { border-bottom: none; }
+
+  .section-label {
+    font-family: var(--mono); font-size: 0.68rem;
+    color: var(--violet); letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 0.8rem;
+  }
+  h2 {
+    font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem);
+    color: var(--text); margin-bottom: 1.2rem; line-height: 1.2;
+  }
+  h3 {
+    font-family: var(--serif); font-size: 1.2rem;
+    color: var(--amber); margin: 2rem 0 0.6rem;
+  }
+  p { margin-bottom: 1rem; color: var(--text-dim); }
+  p strong { color: var(--text); font-weight: 600; }
+  ul, ol { color: var(--text-dim); margin: 0 0 1.2rem 1.3rem; }
+  li { margin-bottom: 0.5rem; }
+  li strong { color: var(--text); }
+
+  .pentad-table {
+    width: 100%; border-collapse: collapse;
+    margin: 1.5rem 0; font-size: 0.86rem;
+  }
+  .pentad-table th {
+    font-family: var(--mono); font-size: 0.66rem;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted); border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0.7rem; text-align: left;
+  }
+  .pentad-table td {
+    padding: 0.6rem 0.7rem; border-bottom: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+  .pentad-table tr:hover td { background: var(--bg2); }
+  .pentad-table .stage { font-family: var(--mono); color: var(--amber); font-weight: 500; }
+  .pentad-table .boundary td { color: var(--teal); }
+
+  pre {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-left: 3px solid var(--violet);
+    padding: 1.2rem 1.4rem; border-radius: 6px;
+    font-family: var(--mono); font-size: 0.8rem;
+    overflow-x: auto; margin: 1.5rem 0;
+    color: var(--text-dim); line-height: 1.6;
+  }
+  code { font-family: var(--mono); font-size: 0.85em; color: var(--amber); }
+
+  .pull {
+    border-left: 3px solid var(--violet);
+    padding: 0.8rem 1.4rem; margin: 2rem 0;
+    background: var(--bg2); border-radius: 0 6px 6px 0;
+  }
+  .pull p { color: var(--text); margin: 0; font-style: italic; font-size: 1.02rem; }
+  .pull .attr {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--text-muted); margin-top: 0.5rem;
+    font-style: normal;
+  }
+
+  /* Branch cards for the three unresolved resolutions */
+  .branches {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem; margin: 1.5rem 0;
+  }
+  .branch {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.2rem 1.3rem;
+    border-top: 3px solid var(--border);
+  }
+  .branch.a { border-top-color: var(--amber); }
+  .branch.b { border-top-color: var(--violet); }
+  .branch.c { border-top-color: var(--teal); }
+  .branch-tag {
+    font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .branch.a .branch-tag { color: var(--amber); }
+  .branch.b .branch-tag { color: var(--violet); }
+  .branch.c .branch-tag { color: var(--teal); }
+  .branch h4 {
+    font-family: var(--serif); font-size: 1.05rem;
+    color: var(--text); margin-bottom: 0.5rem; font-weight: 400;
+  }
+  .branch p { font-size: 0.9rem; margin-bottom: 0; color: var(--text-dim); }
+
+  .ledger-note {
+    background: linear-gradient(135deg, var(--bg2) 0%, #1a1228 100%);
+    border: 1px solid var(--violet-dim);
+    border-radius: 8px; padding: 1.5rem 1.8rem; margin: 2rem 0;
+  }
+  [data-theme="light"] .ledger-note { background: linear-gradient(135deg, var(--bg2) 0%, #ece6f7 100%); }
+  .ledger-label {
+    font-family: var(--mono); font-size: 0.65rem;
+    color: var(--violet); letter-spacing: 0.14em;
+    text-transform: uppercase; margin-bottom: 0.6rem;
+  }
+  .ledger-note p { color: var(--text); margin: 0; }
+
+  .axiom {
+    text-align: center; padding: 2.5rem 1rem;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin: 2.5rem 0;
+  }
+  .axiom-text {
+    font-family: var(--serif); font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: var(--violet); font-style: italic; margin-bottom: 0.4rem;
+  }
+  .axiom-sub {
+    font-family: var(--mono); font-size: 0.7rem;
+    color: var(--text-muted); letter-spacing: 0.06em;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem; text-align: center;
+    font-family: var(--mono); font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 600px) {
+    nav { padding: 0.6rem 1rem; }
+    .nav-links { gap: 1rem; }
+    main, .hero { padding-left: 1rem; padding-right: 1rem; }
+    .pentad-table { font-size: 0.78rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#top">
+    <span class="logo-spin">◈</span>
+    <span>Ukubona LLC</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#chord">Sus Chord</a></li>
+    <li><a href="#question">The Question</a></li>
+    <li><a href="#margins">Margins</a></li>
+    <li><a href="#branches">Branches</a></li>
+    <li><a href="#ledger">Ledger</a></li>
+  </ul>
+  <button class="theme-btn" onclick="toggleTheme()">☾ / ☀</button>
+</nav>
+
+<div class="hero" id="top">
+  <p class="hero-eyebrow">Ukubona · Pentadic Roundtable · July 2026 · Held Open</p>
+  <h1>The <em>Suspended</em> Chord</h1>
+  <p class="hero-sub">Not every session ends on a cadence. This one holds — a routing question inside live, in-production apps, deliberately unresolved. Captured here so it doesn't have to be re-derived next time.</p>
+
+  <div class="sus-chord" id="chord" aria-hidden="true">
+    <div class="note"></div>
+    <div class="note"></div>
+    <div class="note"></div>
+    <div class="note"></div>
+  </div>
+  <p class="sus-label">I(SUS4) — HELD, NOT RESOLVED</p>
+
+  <div class="hero-meta">
+    <span>Claude Sonnet · xAI · Google · OpenAI</span>
+    <span>Kampala</span>
+    <span>Okubala si Kulaba</span>
+  </div>
+</div>
+
+<main>
+
+  <section id="question">
+    <p class="section-label">The Held Note</p>
+    <h2>When does FastAPI hand off to SlowAPI?</h2>
+    <p>The stack is already running in production: <strong>Event-Stream Tokens → Attention / FastAPI → ResonanceMax (the router deciding whether to wake SlowAPI) → Belief / SlowAPI → Commit / Action</strong>, with the Commit re-entering the stream as the next Event-Stream Token. FastAPI is discretized as <strong>Reflex → Heuristic → Cache → Rule → Index</strong>; SlowAPI as <strong>Low → Medium → High → Extra → Pro</strong>.</p>
+    <p>The open question isn't philosophical, it's operational: <strong>what signal tells ResonanceMax to escalate?</strong> The session split this into two problems that shouldn't be fused into one threshold:</p>
+    <ul>
+      <li><strong>Problem A — per-request confidence.</strong> Given this one request, how sure is Index that its match is good? A snapshot question. No history needed.</li>
+      <li><strong>Problem B — regime drift.</strong> Has the population of incoming requests shifted such that the whole cascade is quietly under-matching, even though each individual request still looks locally fine? A time-series question. Needs a window.</li>
+    </ul>
+    <p>A request can trip A without tripping B (one locally weird query in an otherwise stable stream) or trip B without tripping A (the whole distribution drifting while every single request still clears its local bar). Fusing them into one Hessian-flavored metric loses that distinction — which is exactly why this is staying open rather than getting collapsed into a ledger entry prematurely.</p>
+  </section>
+
+  <section id="margins">
+    <p class="section-label">What Each Tier Would Have to Emit</p>
+    <h2>Confidence, tier by tier</h2>
+    <p>The Jacobian/Hessian language names the shape of the problem; it doesn't supply the numbers. Each FastAPI tier would need to emit a margin, not just an answer, before ResonanceMax can threshold on anything real:</p>
+    <table class="pentad-table">
+      <thead>
+        <tr><th>Tier</th><th>What it would emit</th><th>Escalation signal</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="stage">Reflex</td><td>Match, yes/no</td><td>No margin — binary fallthrough only</td></tr>
+        <tr><td class="stage">Heuristic</td><td>Best rule vs. second-best score</td><td>Small margin = weak signal even on a "hit"</td></tr>
+        <tr><td class="stage">Cache</td><td>Similarity of query to cached key</td><td>Distance, not just hit/miss</td></tr>
+        <tr><td class="stage">Rule</td><td>How many rules fired, did they agree</td><td>Conflicting rules &gt; one weak rule</td></tr>
+        <tr class="boundary"><td class="stage">Index</td><td>Nearest-neighbor distance</td><td>Relative to typical top-1 for that region, not absolute</td></tr>
+      </tbody>
+    </table>
+    <p>This is the same shape as cascaded-model routing work already published (FrugalGPT-style, RouteLLM-style): cheap tiers emit a calibratable confidence signal, escalation is a per-tier threshold, not a global one. Five deterministic tiers instead of one cheap model actually makes this easier — each tier can be calibrated independently against logged ground truth.</p>
+    <div class="pull">
+      <p>The pentad gives you where to instrument. It doesn't give you the numbers.</p>
+      <p class="attr">— this session, on the limit of the analogy</p>
+    </div>
+  </section>
+
+  <section id="branches">
+    <p class="section-label">Held Open, Not Chosen</p>
+    <h2>Three resolutions the chord could fall to</h2>
+    <p>None of these are committed. They're the plausible cadences from here — worth naming so the next session doesn't have to reconstruct them.</p>
+    <div class="branches">
+      <div class="branch a">
+        <div class="branch-tag">Resolution A</div>
+        <h4>Dual independent triggers</h4>
+        <p>Keep Problem A (per-request margin) and Problem B (drift over a window) as two separate escalation paths that both feed ResonanceMax, rather than one fused metric. Simplest to reason about; risks two thresholds drifting out of sync with each other over time.</p>
+      </div>
+      <div class="branch b">
+        <div class="branch-tag">Resolution B</div>
+        <h4>Log first, threshold later</h4>
+        <p>Instrument every tier's margin now, ship with a generous (over-escalating) default, and fit real thresholds once there's logged evidence of which escalations actually changed the outcome. Slower to tune, but the thresholds would be earned rather than guessed.</p>
+      </div>
+      <div class="branch c">
+        <div class="branch-tag">Resolution C</div>
+        <h4>Single fused ΔJacobian metric</h4>
+        <p>Collapse A and B into one rate-of-change signal on FastAPI's own outputs, as the original artifact proposed. Cheapest to build; the known risk is losing sensitivity to the single hard request sitting inside an otherwise-stable stream.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="ledger">
+    <div class="ledger-note">
+      <p class="ledger-label">Sovereign Override — Elicitation, Not Resolution</p>
+      <p>This session stays a held chord by design: the apps in question are live and already serving customers, so no threshold gets committed from a roundtable alone. When there's logged evidence — which margin metric, which threshold, whether A and B actually need to stay separate — that's the trigger to write the LedgerEvent. Until then, this page is the ElicitationRequest, dated and parked.</p>
+    </div>
+
+    <div class="axiom">
+      <div class="axiom-text">Ear, then be — but not yet.</div>
+      <div class="axiom-sub">Some chords are held because the next voice hasn't spoken</div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  Ukubona LLC · Kampala · July 20, 2026 · <em>okubala si kulaba</em>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('ukb-theme', html.dataset.theme);
+  }
+  const saved = localStorage.getItem('ukb-theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+
+  const sections = document.querySelectorAll('section[id], .hero[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-links a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
